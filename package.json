@@ -1,0 +1,64 @@
+{
+  "name": "dsh-session-insight",
+  "version": "0.1.0",
+  "description": "Session health insight projection (sessionInsight) plus a read-only dock card for the DeepSeek Harness: steps, tool calls, failures, repeated calls and failure rate.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Elari39",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Elari39/dsh-session-insight.git"
+  },
+  "homepage": "https://github.com/Elari39/dsh-session-insight#readme",
+  "bugs": {
+    "url": "https://github.com/Elari39/dsh-session-insight/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek",
+    "deepseek-harness",
+    "cordis",
+    "session",
+    "projection",
+    "observability",
+    "plugin"
+  ],
+  "engines": {
+    "node": ">=22.6"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "install.ps1"
+  ],
+  "dsh": {
+    "bundle": { "patch": "./cordis.patch.yml" },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-session"
+      ]
+    }
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "~4.0.4",
+    "@deepseek-ai/dsh-session-projection": "^0.2.0-rc.2"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

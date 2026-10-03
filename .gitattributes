@@ -1,0 +1,6 @@
+# Normalize line endings: the repo stores LF, Git checks out native on Windows.
+* text=auto eol=lf
+
+# Binary-ish assets stay untouched.
+*.png binary
+*.ico binary

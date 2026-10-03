@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Local dsh profile wiring / backups created by install.ps1
+*.bak-before-session-insight
+
+# Logs and OS cruft
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
