@@ -8,28 +8,36 @@
 
 ## 安装
 
-本包既是 npm 包，也是一个 **dsh bundle**（`package.json` 里的 `dsh.bundle.patch` 指向 `cordis.patch.yml`），三种装法任选。
-
-### A. 从 npm（推荐）
+本包是一个 **dsh bundle**（`package.json` 里的 `dsh.bundle.patch` 指向 `cordis.patch.yml`），
+**从 GitHub 直接安装即可，不需要 npm，也不需要任何构建步骤** —— 仓库里的源码就是最终产物
+（`index.js` 是 host 半，`client.js` 是预先构建好的浏览器半）。
 
 ```powershell
 # 用 Desktop 自带的 CLI 绝对路径；PATH 上的旧 dsh 管不了新 profile
 $dsh = "D:\Downloads\software\DSH\resources\runtime\cli\bin\dsh.cmd"
 
-# 1) 装进目标 profile
-& $dsh plugin --profile web add dsh-session-insight
+# 1) 装进目标 profile（pnpm 会克隆仓库，并自动装好 zod 与 peer 依赖）
+& $dsh plugin --profile web add github:Elari39/dsh-session-insight
 
 # 2) 让 profile 真的加载它：编辑 ~/.dsh/profiles/web/package.json，
 #    在 dsh.profile.bundles 数组里加上 "dsh-session-insight"
 ```
 
-### B. 直接从 GitHub（没发 npm 时也能用）
+生产环境建议钉到固定版本（tag 对应的 tarball 内容不会变）：
 
 ```powershell
-& $dsh plugin --profile web add github:Elari39/dsh-session-insight
+& $dsh plugin --profile web add https://github.com/Elari39/dsh-session-insight/archive/refs/tags/v0.1.0.tar.gz
 ```
 
-### C. Desktop profile（Electron 独占）
+> **这条路径已实测验证**：`pnpm add github:Elari39/dsh-session-insight` 之后，
+> `import('dsh-session-insight')` 正常返回 `apply, inject, name` 三个导出（`inject` 没有被
+> `unwrapExports` 折叠丢掉），`zod@4.6.5` 经 pnpm 虚拟 store 正确解析，peer 依赖自动落到
+> `@deepseek-ai/cordis@4.0.4` 与 `@deepseek-ai/dsh-session-projection@0.2.0-rc.2`。
+>
+> npm 渠道目前**未发布**。若以后要发，`publishConfig` 已配好，执行 `npm publish --otp=<code>` 即可
+> —— 注意 npm 现已**强制要求 2FA** 才能建包/发包。
+
+### Desktop profile（Electron 独占，不能用 `dsh plugin`）
 
 `dsh plugin` 会拒绝 desktop profile（`profile "desktop" is managed exclusively by the Electron application`），
 只能直接改 patch 文件：
